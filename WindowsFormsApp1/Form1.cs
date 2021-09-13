@@ -50,17 +50,23 @@ namespace WindowsFormsApp1
         private void ShowResault(DataTable data)
         {
             string passportNumber = GetPassportNumber();
-            if (data.Rows.Count > 0)
+
+            if (data.Rows.Count == 0)
             {
-                if (Convert.ToBoolean(data.Rows[0].ItemArray[1]))
-                    this.textResult.Text = $"По паспорту «{passportNumber}» доступ к бюллетеню на дистанционном электронном голосовании ПРЕДОСТАВЛЕН";
-                else
-                    this.textResult.Text = $"По паспорту «{passportNumber}» доступ к бюллетеню на дистанционном электронном голосовании НЕ ПРЕДОСТАВЛЯЛСЯ";
+                this.textResult.Text = $"Паспорт «{passportNumber}» в списке участников дистанционного голосования НЕ НАЙДЕН";
+                return;
+            }
+            DataRow voterData = data.Rows[0];
+            bool accessVoter = Convert.ToBoolean(voterData.ItemArray[1]);
+            if (accessVoter)
+            {
+                this.textResult.Text = $"По паспорту «{passportNumber}» доступ к бюллетеню на дистанционном электронном голосовании ПРЕДОСТАВЛЕН";
             }
             else
             {
-                this.textResult.Text = $"Паспорт «{passportNumber}» в списке участников дистанционного голосования НЕ НАЙДЕН";
+                this.textResult.Text = $"По паспорту «{passportNumber}» доступ к бюллетеню на дистанционном электронном голосовании НЕ ПРЕДОСТАВЛЯЛСЯ";
             }
+        }
         }
     }
 }
